@@ -1,0 +1,89 @@
+Setup the Project:
+
+Create a new directory for your project and navigate into it.
+
+bash
+mkdir react-node-app
+cd react-node-app
+Initialize Node.js Backend:
+
+Initialize a Node.js project and install the necessary dependencies.
+
+bash
+npm init -y
+npm install express
+Create a file named server.js for your backend.
+
+javascript
+// server.js
+const express = require('express');
+const app = express();
+const port = 5000;
+
+app.get('/api/message', (req, res) => {
+  res.json({ message: 'Hello from the server!' });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+Create React App:
+
+In the same project directory, open a new terminal window and run the following commands to create a React app.
+
+bash
+npx create-react-app client
+Connect React to Node.js:
+
+Edit the package.json file inside the client directory to add a proxy for the backend.
+
+json
+// client/package.json
+{
+  // other configurations...
+  "proxy": "http://localhost:5000",
+  // other configurations...
+}
+Update React Component:
+
+Edit the client/src/App.js file to fetch data from the Node.js backend.
+
+javascript
+// client/src/App.js
+import React, { useState, useEffect } from 'react';
+import './App.css';
+
+function App() {
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    // Fetch data from the Node.js backend
+    fetch('/api/message')
+      .then((response) => response.json())
+      .then((data) => setMessage(data.message))
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>{message}</h1>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+Run the Application:
+
+In separate terminal windows, run the Node.js backend and React frontend.
+
+For the backend:
+
+bash
+node server.js
+For the frontend (inside the client directory):
+
+bash
+npm start
+Visit http://localhost:3000 in your browser, and you should see the message fetched from the Node.js backend.
